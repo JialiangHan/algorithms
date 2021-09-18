@@ -1,13 +1,14 @@
 #ifndef GENETIC_ALGORITHM
 #define GENETIC_ALGORITHM
 
-#include <ros/ros.h>
-#include <ros/time.h>
-#include <geometry_msgs/TransformStamped.h>
-#include <tf/transform_broadcaster.h>
-#include <nav_msgs/Odometry.h>
-#include <boost/asio.hpp>
-#include <geometry_msgs/Twist.h>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+typedef std::vector<int> generation;
+typedef std::unordered_map<int,std::string> encoded_generation;
+typedef std::unordered_map<std::string,double> fitness_map;
+typedef std::unordered_map<std::string,float> selection_map; 
 
 namespace genetic_algorithm
 {
@@ -16,29 +17,25 @@ class genetic_algorithm
 {
 public:
     genetic_algorithm();
+    genetic_algorithm(int max_iterations,double probability_mutation,int population_size)
+    {
+        max_iteration = max_iterations;
+        probability_mutation = probability_mutation;
+        population_size = population_size;
+    };
     ~genetic_algorithm();
-    bool init();
-    bool spinOnce(double RobotV, double YawRate);
+    generation initial_generation();
+    encoded_generation encoding(generation x);
+    generation decoding(encoded_generation y);
+    fitness_map fitness(encoded_generation y);
+    encoded_generation selection(fitness_map z);
+    generation generate_next(encoded_generation generation);
+    std::string mutation(std::string chrono);
    
 private:
-    bool readSpeed();
-    void writeSpeed(double RobotV, double YawRate);
-    unsigned char getCrc8(unsigned char *ptr, unsigned short len);
-   
-private:
-    ros::Time current_time_, last_time_;
-
-    double x_;
-    double y_;
-    double th_;
-
-    double vx_;
-    double vy_;
-    double vth_;
-
-    ros::NodeHandle nh;
-    ros::Publisher pub_;
-    tf::TransformBroadcaster odom_broadcaster_;
+    int max_iteration;
+    double probability_mutation;
+    int population_size;
 };
     
 }
