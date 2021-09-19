@@ -26,11 +26,12 @@ public:
      * @param probability_mutation 
      * @param population_size 
      */
-    genetic_algorithm(int max_iterations,double probability_mutation,int population_size)
+    genetic_algorithm(int max_iterations,double probability_mutation,int population_size,int bits)
     {
         max_iteration = max_iterations;
         probability_mutation = probability_mutation;
         population_size = population_size;
+        number_of_bits = bits;
     };
     // ~genetic_algorithm();
     /**
@@ -121,6 +122,7 @@ private:
     int max_iteration;
     double probability_mutation;
     int population_size;
+    int number_of_bits;
 };
     
 }

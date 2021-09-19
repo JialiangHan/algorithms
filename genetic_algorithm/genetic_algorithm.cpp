@@ -6,6 +6,8 @@
 #include <math.h>
 #include <iostream>
 #include <random>
+#include <cstring>
+
 namespace genetic_algorithm
 {
 
@@ -24,6 +26,7 @@ namespace genetic_algorithm
         encoded_generation encoded_generation;
         for(auto i:x)
         {
+            // std::string encoded = std::bitset<number_of_bits >( i ).to_string();
             std::string encoded = std::bitset< 5 >( i ).to_string();
             encoded_generation.emplace(i,encoded);
         }
@@ -104,10 +107,59 @@ namespace genetic_algorithm
         return next;
     }
 
-    encoded_generation exchange_genes(encoded_generation& encoded_generation)
+    encoded_generation genetic_algorithm::exchange_genes(encoded_generation& before)
     {
-        
+        encoded_generation exchanged;
+        std::default_random_engine generator;
+        std::uniform_int_distribution<int> distribution(0,number_of_bits);
+        auto iter = before.begin();
+        std::string temp11,temp12,temp21,temp22;
+        while(iter!=before.end())
+        {
+            int dice_roll = distribution(generator);
+            temp11 = iter->second.substr(0,dice_roll);
+            temp12 = iter->second.substr(dice_roll);
+            temp21 = (++iter)->second.substr(0,dice_roll);
+            temp22 = (++iter)->second.substr(dice_roll);
+            exchanged.emplace(string_to_int(temp11+temp22),temp11+temp22);
+            exchanged.emplace(string_to_int(temp21+temp12),temp21+temp12);
+            ++iter;
+            ++iter;
+            if(exchanged.size() >= population_size)
+            {
+                break;
+            }
+        }
+        return exchanged;
     }
+
+    std::string genetic_algorithm::mutation(std::string chrono)
+    {
+        std::default_random_engine generator;
+        std::uniform_real_distribution<double> distribution(0.0,1.0);
+        std::string mutated="";
+        for(int i =0; i< chrono.size(); ++i)
+        {
+            float dice_roll = distribution(generator);
+            if(dice_roll<=probability_mutation)
+            {
+                if(std::strcmp(&chrono[i],"0"))
+                {
+                    mutated+="1";
+                }
+                else
+                {
+                    mutated+="0";
+                }
+            }
+            else
+            {
+                mutated += chrono[i];
+            }
+        }
+        return mutated;
+    }
+    
 
     generation genetic_algorithm::generate_next(encoded_generation& generation)
     {
@@ -122,14 +174,20 @@ namespace genetic_algorithm
 
 int main(int argc, char** argv) {
     int max_iterations =1000;
-    double probability_mutation = 0.01;
+    double probability_mutation = 0.8;
     int population_size = 10;
-    genetic_algorithm::genetic_algorithm test(max_iterations,probability_mutation,population_size);
-    generation initial_generation;
-    initial_generation=test.initial_generation();
-    for(auto j=initial_generation.begin();j!=initial_generation.end();++j)
-    {
-            std::cout << "value: " << (*j) <<std::endl;
-    }
+    int number_of_bits = 5;
+    genetic_algorithm::genetic_algorithm test(max_iterations,probability_mutation,population_size,number_of_bits);
+    std::string a="11111";
+    std::string out;
+    out = test.mutation(a);   
+    // generation initial_generation;
+    // initial_generation=test.initial_generation();
+    // for(auto j=initial_generation.begin();j!=initial_generation.end();++j)
+    // {
+    //         std::cout << "value: " << (*j) <<std::endl;
+    // }
+    std::cout << "before: " << a <<std::endl;
+    std::cout << "after: " << out <<std::endl;
     return 0;
 }
