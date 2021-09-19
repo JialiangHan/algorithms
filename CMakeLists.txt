@@ -200,3 +200,8 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+add_executable(genetic_algorithm genetic_algorithm/genetic_algorithm.cpp) 
+target_link_libraries(genetic_algorithm )
+
+# add_executable(trial genetic_algorithm/trial.cpp) 
+# target_link_libraries(trial )
