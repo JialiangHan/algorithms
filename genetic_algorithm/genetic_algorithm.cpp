@@ -14,7 +14,7 @@ namespace genetic_algorithm
     generation genetic_algorithm::initial_generation()
     {
         generation initial_generation;
-        for(int i=0;i<population_size; ++i)
+        while(initial_generation.size()<population_size)
         {
             initial_generation.emplace(rand()%31,fitness_function(rand()%31));
         }
@@ -213,16 +213,19 @@ int main(int argc, char** argv) {
     const int population_size = 10;
     const int number_of_bits = 5;
     genetic_algorithm::genetic_algorithm test(max_iterations,probability_mutation,population_size,number_of_bits);
-    std::string a="01010";
-    std::string out;
-    out = test.mutation(a);   
-    // generation initial_generation;
-    // initial_generation=test.initial_generation();
-    // for(auto j=initial_generation.begin();j!=initial_generation.end();++j)
-    // {
-    //         std::cout << "value: " << (*j) <<std::endl;
-    // }
-    std::cout << "before: " << a <<std::endl;
-    std::cout << "after: " << out <<std::endl;
+    // std::string a="01010";
+    // std::string out;
+    // out = test.mutation(a);   
+    // std::cout << "before: " << a <<std::endl;
+    // std::cout << "after: " << out <<std::endl;
+    generation initial_generation;
+    initial_generation=test.initial_generation();
+    int i=0;
+    for(auto j=initial_generation.begin();j!=initial_generation.end();++j)
+    {
+            std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
+            ++i;
+    }
+
     return 0;
 }
