@@ -228,9 +228,11 @@ int main(int argc, char** argv) {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
     }
-    gen = test.decoding(encoded);
+    // gen = test.decoding(encoded);
     i=0;
-    for(auto j=gen.begin();j!=gen.end();++j)
+    fitness_map fm;
+    fm = test.fitness(encoded);
+    for(auto j=fm.begin();j!=fm.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
