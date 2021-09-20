@@ -201,10 +201,10 @@ namespace genetic_algorithm
             ++iteration;
         }
         gen = decoding(encoded_gen_1);
-        for(auto j=gen.begin();j!=gen.end();++j)
-        {
-            std::cout << "key: " << j->first <<"value:"<<j->second<<std::endl;
-        }
+        // for(auto j=gen.begin();j!=gen.end();++j)
+        // {
+        //     std::cout << "key: " << j->first <<"value:"<<j->second<<std::endl;
+        // }
         return gen;
     }
 }
@@ -216,28 +216,18 @@ int main(int argc, char** argv) {
     const int number_of_bits = 5;
     genetic_algorithm::genetic_algorithm test(max_iterations,probability_mutation,population_size,number_of_bits);
     generation gen;
-    gen=test.initial_generation();
-    encoded_generation encoded;
-    encoded_generation encoded_1;
-    encoded = test.encoding(gen);
+    gen = test.evolution();
     int i=0;
-    fitness_map fm;
-    fm = test.fitness(encoded);
-    encoded = test.selection(fm);
-    encoded_1 = test.mating(encoded);
-    encoded = test.exchange_genes(encoded_1);
-    encoded_1 = test.generation_mutated(encoded);
-    for(auto j=encoded_1.begin();j!=encoded_1.end();++j)
+    for(auto j=gen.begin();j!=gen.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
     }
-    i=0;
-    for(auto j=encoded.begin();j!=encoded.end();++j)
-    {
-            std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
-            ++i;
-    }
+    int x=15;
+    double y=0.0;
+    y=test.fitness_function(x);
+    std::cout << " x: " << x <<" fitness:"<<y<<std::endl;
+
 
     return 0;
 }
