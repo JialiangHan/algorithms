@@ -84,6 +84,12 @@ namespace genetic_algorithm
         {
             probability_map.emplace(i.second/total_fitness, i.first);
         }
+        int i=0;
+        for(auto j=probability_map.begin();j!=probability_map.end();++j)
+        {
+                std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
+                ++i;
+        }
         auto j=probability_map.lower_bound(0.10);
         for(j;j!=probability_map.end();++j)
         {
@@ -223,16 +229,19 @@ int main(int argc, char** argv) {
     encoded_generation encoded;
     encoded = test.encoding(gen);
     int i=0;
-    for(auto j=encoded.begin();j!=encoded.end();++j)
-    {
-            std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
-            ++i;
-    }
+
     // gen = test.decoding(encoded);
-    i=0;
+    
     fitness_map fm;
     fm = test.fitness(encoded);
-    for(auto j=fm.begin();j!=fm.end();++j)
+    // for(auto j=fm.begin();j!=fm.end();++j)
+    // {
+    //         std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
+    //         ++i;
+    // }
+    i=0;
+    encoded = test.selection(fm);
+    for(auto j=encoded.begin();j!=encoded.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
