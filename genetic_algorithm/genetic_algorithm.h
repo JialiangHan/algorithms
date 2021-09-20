@@ -5,11 +5,14 @@
 #include <string>
 #include <unordered_map>
 #include <map>
+#include <vector>
+#include <utility>
 
-typedef std::unordered_multimap<int,double> generation;
-typedef std::unordered_multimap<int,std::string> encoded_generation;
-typedef std::unordered_multimap<std::string,double> fitness_map;
-typedef std::multimap<float,std::string> selection_map; 
+typedef std::vector<int> generation;
+typedef std::vector<std::string> encoded_generation;
+typedef std::unordered_multimap<int,std::string> mated_generation;
+typedef std::multimap<float,int> fitness_map;
+// typedef std::multimap<float,std::string> selection_map; 
 
 namespace genetic_algorithm
 {
@@ -25,7 +28,7 @@ public:
      * @param probability_mutation 
      * @param population_size 
      */
-    genetic_algorithm(const int max_iterations,const double probability,const int size,const int bits)
+    genetic_algorithm(const int max_iterations,const float probability,const int size,const int bits)
     {
         max_iteration = max_iterations;
         probability_mutation = probability;
@@ -57,9 +60,9 @@ public:
      * @brief fitness function
      * 
      * @param x 
-     * @return double 
+     * @return float 
      */
-    double fitness_function(int x);
+    float fitness_function(int x);
     /**
      * @brief convert a string type binary code into a decimal int
      * 
@@ -85,7 +88,7 @@ public:
      * @brief randomly mate two chrono to get a full size generation 
      * 
      * @param z encoded generation after selection 
-     * @return encoded_generation 
+     * @return mated_generation 
      */
     encoded_generation mating(encoded_generation& z);
     /**
@@ -94,7 +97,7 @@ public:
      * @param encoded_generation 
      * @return encoded_generation 
      */
-    encoded_generation exchange_genes(encoded_generation& encoded_generation);
+    encoded_generation exchange_genes(encoded_generation& mated);
     /**
      * @brief mutate a chrono by some probability
      * 
@@ -118,7 +121,7 @@ public:
    
 private:
     int max_iteration;
-    double probability_mutation;
+    float probability_mutation;
     int population_size;
     int number_of_bits;
 };
