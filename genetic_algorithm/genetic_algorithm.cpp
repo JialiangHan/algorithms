@@ -126,10 +126,9 @@ namespace genetic_algorithm
             temp11 = iter->second.substr(0,dice_roll);
             temp12 = iter->second.substr(dice_roll);
             temp21 = (++iter)->second.substr(0,dice_roll);
-            temp22 = (++iter)->second.substr(dice_roll);
+            temp22 = iter->second.substr(dice_roll);
             exchanged.emplace(string_to_int(temp11+temp22),temp11+temp22);
             exchanged.emplace(string_to_int(temp21+temp12),temp21+temp12);
-            ++iter;
             ++iter;
             if(exchanged.size() >= population_size)
             {
@@ -208,9 +207,6 @@ namespace genetic_algorithm
         }
         return gen;
     }
-
-    
-
 }
 
 int main(int argc, char** argv) {
@@ -229,7 +225,13 @@ int main(int argc, char** argv) {
     fm = test.fitness(encoded);
     encoded = test.selection(fm);
     encoded_1 = test.mating(encoded);
+    encoded = test.exchange_genes(encoded_1);
     for(auto j=encoded_1.begin();j!=encoded_1.end();++j)
+    {
+            std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
+            ++i;
+    }
+    for(auto j=encoded.begin();j!=encoded.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
