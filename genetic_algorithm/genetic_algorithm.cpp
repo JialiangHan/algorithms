@@ -218,12 +218,19 @@ int main(int argc, char** argv) {
     // out = test.mutation(a);   
     // std::cout << "before: " << a <<std::endl;
     // std::cout << "after: " << out <<std::endl;
-    generation initial_generation;
-    initial_generation=test.initial_generation();
+    generation gen;
+    gen=test.initial_generation();
     encoded_generation encoded;
-    encoded = test.encoding(initial_generation);
+    encoded = test.encoding(gen);
     int i=0;
     for(auto j=encoded.begin();j!=encoded.end();++j)
+    {
+            std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
+            ++i;
+    }
+    gen = test.decoding(encoded);
+    i=0;
+    for(auto j=gen.begin();j!=gen.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
