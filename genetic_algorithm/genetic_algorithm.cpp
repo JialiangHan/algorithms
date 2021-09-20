@@ -220,8 +220,10 @@ int main(int argc, char** argv) {
     // std::cout << "after: " << out <<std::endl;
     generation initial_generation;
     initial_generation=test.initial_generation();
+    encoded_generation encoded;
+    encoded = test.encoding(initial_generation);
     int i=0;
-    for(auto j=initial_generation.begin();j!=initial_generation.end();++j)
+    for(auto j=encoded.begin();j!=encoded.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
