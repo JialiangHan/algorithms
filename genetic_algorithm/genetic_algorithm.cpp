@@ -226,11 +226,13 @@ int main(int argc, char** argv) {
     encoded = test.selection(fm);
     encoded_1 = test.mating(encoded);
     encoded = test.exchange_genes(encoded_1);
+    encoded_1 = test.generation_mutated(encoded);
     for(auto j=encoded_1.begin();j!=encoded_1.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
     }
+    i=0;
     for(auto j=encoded.begin();j!=encoded.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
