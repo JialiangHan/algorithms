@@ -3,11 +3,10 @@
 #define GENETIC_ALGORITHM
 
 #include <string>
-#include <vector>
 #include <unordered_map>
 #include <map>
 
-typedef std::vector<int> generation;
+typedef std::unordered_map<int,double> generation;
 typedef std::unordered_map<int,std::string> encoded_generation;
 typedef std::unordered_map<std::string,double> fitness_map;
 typedef std::map<float,std::string> selection_map; 
@@ -26,11 +25,11 @@ public:
      * @param probability_mutation 
      * @param population_size 
      */
-    genetic_algorithm(int max_iterations,double probability_mutation,int population_size,int bits)
+    genetic_algorithm(const int max_iterations,const double probability,const int size,const int bits)
     {
         max_iteration = max_iterations;
-        probability_mutation = probability_mutation;
-        population_size = population_size;
+        probability_mutation = probability;
+        population_size = size;
         number_of_bits = bits;
     };
     // ~genetic_algorithm();
@@ -106,17 +105,16 @@ public:
     /**
      * @brief use mutation function for  generation to mutate full generation
      * 
-     * @param g a generation
-     * @return generation 
+     * @param g encoded generation
+     * @return encoded generation 
      */
-    generation generation_mutated(generation& g);
+    encoded_generation generation_mutated(encoded_generation& g);
     /**
-     * @brief generate next generation by selection, mating and mutation
+     * @brief main function in class, run max_iteration to get generation 
      * 
-     * @param generation 
      * @return generation 
      */
-    generation generate_next(encoded_generation& generation);
+    generation evolution();
    
 private:
     int max_iteration;
