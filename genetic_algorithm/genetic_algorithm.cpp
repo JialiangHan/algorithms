@@ -84,12 +84,12 @@ namespace genetic_algorithm
         {
             probability_map.emplace(i.second/total_fitness, i.first);
         }
-        int i=0;
-        for(auto j=probability_map.begin();j!=probability_map.end();++j)
-        {
-                std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
-                ++i;
-        }
+        // int i=0;
+        // for(auto j=probability_map.begin();j!=probability_map.end();++j)
+        // {
+        //         std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
+        //         ++i;
+        // }
         auto j=probability_map.lower_bound(0.10);
         for(j;j!=probability_map.end();++j)
         {
@@ -103,7 +103,7 @@ namespace genetic_algorithm
         encoded_generation next;
         int size = z.size();
         std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution(0,size);
+        std::uniform_int_distribution<int> distribution(0,size-1);
         for(int i=0;i<population_size;++i)
         {
             int dice_roll = distribution(generator);
@@ -219,29 +219,17 @@ int main(int argc, char** argv) {
     const int population_size = 10;
     const int number_of_bits = 5;
     genetic_algorithm::genetic_algorithm test(max_iterations,probability_mutation,population_size,number_of_bits);
-    // std::string a="01010";
-    // std::string out;
-    // out = test.mutation(a);   
-    // std::cout << "before: " << a <<std::endl;
-    // std::cout << "after: " << out <<std::endl;
     generation gen;
     gen=test.initial_generation();
     encoded_generation encoded;
+    encoded_generation encoded_1;
     encoded = test.encoding(gen);
     int i=0;
-
-    // gen = test.decoding(encoded);
-    
     fitness_map fm;
     fm = test.fitness(encoded);
-    // for(auto j=fm.begin();j!=fm.end();++j)
-    // {
-    //         std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
-    //         ++i;
-    // }
-    i=0;
     encoded = test.selection(fm);
-    for(auto j=encoded.begin();j!=encoded.end();++j)
+    encoded_1 = test.mating(encoded);
+    for(auto j=encoded_1.begin();j!=encoded_1.end();++j)
     {
             std::cout << i<<" x: " << j->first <<" fitness:"<<j->second<<std::endl;
             ++i;
