@@ -9,7 +9,7 @@
 typedef std::unordered_map<int,double> generation;
 typedef std::unordered_map<int,std::string> encoded_generation;
 typedef std::unordered_map<std::string,double> fitness_map;
-typedef std::map<float,std::string> selection_map; 
+typedef std::multimap<float,std::string> selection_map; 
 
 namespace genetic_algorithm
 {
