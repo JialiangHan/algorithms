@@ -24,6 +24,19 @@ TSP ga_tsp::initial_TSP()
     return city_list;
 }
 
+chromosome ga_tsp::form_chromosome(TSP problem)
+{
+    chromosome chromo;
+    chromo.push_back(problem[0]);
+    problem.erase(problem.begin());
+    for(int i=1;i<number_of_city;++i)
+    {
+        int index=rand() % problem.size();
+        chromo.push_back(problem[index]);
+        problem.erase(problem.begin()+ index);
+    }    
+    return chromo;
+}
 // generation ga_tsp::initial_generation()
 // {
 //     generation initial_generation;
@@ -228,6 +241,8 @@ int main(int argc, char** argv) {
     ga_tsp test(max_iterations,probability_mutation,population_size,number_of_cities);
     TSP problem;
     problem = test.initial_TSP();
+    chromosome chromo;
+    chromo = test.form_chromosome(problem);
     // gen = test.evolution();
     // float result=0.0;
     // float temp=0.0;
@@ -242,13 +257,11 @@ int main(int argc, char** argv) {
     //     }
     // }
     std::vector<float> x,y;
-    for(int i=0;i<problem.size();++i)
+    for(int i=0;i<chromo.size();++i)
     {
-        std::cout << " index: " << problem[i].index<<"\n";   
-        std::cout << " x: " << problem[i].coordinates.first<<"\n";
-        std::cout << " y: " << problem[i].coordinates.second<<"\n";
-        x.push_back(problem[i].coordinates.first);
-        y.push_back(problem[i].coordinates.second);
+        std::cout << " index: " << chromo[i].index<<" x: " << chromo[i].coordinates.first<<" y: " << chromo[i].coordinates.second<<"\n";
+        // x.push_back(problem[i].coordinates.first);
+        // y.push_back(problem[i].coordinates.second);
     }
     // std::cout << " x: " << gen[max_index]<<"\n";
     // std::cout << " fitness: " << result<<"\n";
