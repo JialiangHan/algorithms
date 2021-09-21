@@ -8,9 +8,7 @@
 #include <vector>
 #include <utility>
 
-// typedef std::vector<std::string> encoded_generation;
 // typedef std::unordered_multimap<int,std::string> mated_generation;
-// typedef std::multimap<float,int> fitness_map;
 
 struct City
 {
@@ -25,7 +23,7 @@ struct City
 typedef std::vector<City> TSP;
 typedef std::vector<City> chromosome;
 typedef std::vector<chromosome> generation;
-
+typedef std::multimap<float,int> fitness_map;
 class ga_tsp
 {
 public:
@@ -69,15 +67,17 @@ public:
      * @return generation 
      */
     generation initial_generation(TSP& problem);
-    
-    // encoded_generation encoding(generation& x);
-   
-    // generation decoding(encoded_generation& y);
-   
-    // float fitness_function(int x);
-    
-    // int string_to_int(std::string s);
-    
+    /**
+     * @brief calculate euler distance between city a and city b;
+     * 
+     * @param a city a
+     * @param b city b
+     * @return float 
+     */
+    float distance(City& a, City& b);
+
+    float get_fitness_for_chromosome(chromosome& chromo);
+       
     // fitness_map fitness(encoded_generation& y);
     
     // encoded_generation selection(fitness_map& z);

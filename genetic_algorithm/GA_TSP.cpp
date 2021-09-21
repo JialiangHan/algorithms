@@ -56,45 +56,25 @@ generation ga_tsp::initial_generation(TSP& problem)
     }
     return gen;
 }
-// generation ga_tsp::initial_generation()
-// {
-//     generation initial_generation;
-//     int i;
-//     while(initial_generation.size()<population_size)
-//     {
-//         i=rand()%31;
-//         if (std::find(initial_generation.begin(), initial_generation.end(), i) != initial_generation.end())
-//         {
-//             continue;
-//         }
-//         else{initial_generation.push_back(i);}
-        
-//     }
-//     return initial_generation;
-// }
 
-// encoded_generation ga_tsp::encoding(generation& x)
-// {
-//     encoded_generation encoded_generation;
-//     for(auto i:x)
-//     {
-//         // std::string encoded = std::bitset<number_of_bits >( i ).to_string();
-//         std::string encoded = std::bitset< 5 >( i ).to_string();
-//         encoded_generation.push_back(encoded);
-//     }
-//     return encoded_generation;
-// }
+float ga_tsp::distance(City& a, City& b)
+{
+    float temp1,temp2;
+    temp1 = a.coordinates.first - b.coordinates.first;
+    temp2 = a.coordinates.second - b.coordinates.second;
+    return sqrt(temp1 * temp1 + temp2 * temp2);
+}
 
-// generation ga_tsp::decoding(encoded_generation& y)
-// {
-//     generation generation;
-//     for(auto i:y)
-//     {
-//         generation.push_back(string_to_int(i));
-//     }
-//     return generation;
-// }
-
+float ga_tsp::get_fitness_for_chromosome(chromosome& chromo)
+{
+    float travel_distance=0.0;
+    for(int i=0;i<chromo.size()-1;++i)
+    {
+        travel_distance += distance(chromo[i],chromo[i+1]);
+    }
+    travel_distance += distance(chromo.front(), chromo.back());
+    return travel_distance;
+}
 // float ga_tsp::fitness_function(int x)
 // {
 //     float result;
@@ -260,10 +240,10 @@ int main(int argc, char** argv) {
     ga_tsp test(max_iterations,probability_mutation,population_size,number_of_cities);
     TSP problem;
     problem = test.initial_TSP();
-    // chromosome chromo;
-    // chromo = test.form_chromosome(problem);
-    generation gen;
-    gen = test.initial_generation(problem);
+    chromosome chromo;
+    chromo = test.form_chromosome(problem);
+    // generation gen;
+    // gen = test.initial_generation(problem);
     // gen = test.evolution();
     // float result=0.0;
     // float temp=0.0;
@@ -278,17 +258,21 @@ int main(int argc, char** argv) {
     //     }
     // }
     // std::vector<float> x,y;
-    for(int i=0;i<gen.size();++i)
-    {
-        std::cout<<"chromosome"<< i<< std::endl;
-        for(int j=0;j<gen[i].size();++j)
+    // for(int i=0;i<chromo.size();++i)
+    // {
+        // std::cout<<"chromosome"<< i<< std::endl;
+        float sum=0.0;
+        for(int j=0;j<chromo.size()-1;++j)
         {
-            std::cout << " " << gen[i][j].index;
+            sum += test.distance(chromo[j],chromo[j+1]);
+            std::cout <<"index"<<j<< " distance " << sum <<"\n";
         }
-        std::cout<<"\n";
+        sum+=test.distance(chromo[19],chromo[0]);
+        std::cout<<sum<<"\n";
+        std::cout<<test.get_fitness_for_chromosome(chromo)<<std::endl;
         // x.push_back(problem[i].coordinates.first);
         // y.push_back(problem[i].coordinates.second);
-    }
+    // }
     // std::cout << " x: " << gen[max_index]<<"\n";
     // std::cout << " fitness: " << result<<"\n";
     // matplotlibcpp::plot(x,y);
