@@ -7,7 +7,6 @@
 #include <iostream>
 #include <random>
 #include <algorithm> 
-// #include <cstring>
 
 namespace genetic_algorithm
 {
@@ -144,13 +143,11 @@ namespace genetic_algorithm
 
     std::string genetic_algorithm::mutation(std::string chrono)
     {
-        std::default_random_engine generator;
-        std::uniform_real_distribution<float> distribution(0.0,1.0);
         std::string mutated="";
         std::string zero ="0";
         for(int i =0; i< chrono.size(); ++i)
         {
-            float dice_roll = distribution(generator);
+            float dice_roll = rand() % (999 + 1) / (float)(999 + 1);
             if(dice_roll<=probability_mutation)
             {
                 if(chrono[i]==zero[0])
@@ -211,48 +208,26 @@ namespace genetic_algorithm
 }
 
 int main(int argc, char** argv) {
-    const int max_iterations =10000;
-    const float probability_mutation = 0.1;
+    const int max_iterations =4;
+    const float probability_mutation = 0.02;
     const int population_size = 10;
     const int number_of_bits = 5;
     genetic_algorithm::genetic_algorithm test(max_iterations,probability_mutation,population_size,number_of_bits);
     generation gen;
     gen = test.evolution();
-    
-    // encoded_generation encoded_gen_1;
-    // encoded_generation encoded_gen_2;
-    // fitness_map fm;
-    // //initial generation
-    // gen = test.initial_generation();
-    // encoded_gen_1 = test.encoding(gen);
-    //         fm = test.fitness(encoded_gen_1);
-    //         //selection
-    //         encoded_gen_2 = test.selection(fm);
-    //         //mating
-    //         encoded_gen_1 = test.mating(encoded_gen_2);
-    //         // //exchange genes
-    //         encoded_gen_2 = test.exchange_genes(encoded_gen_1);
-    //         // //mutation
-    //         encoded_gen_1 = test.generation_mutated(encoded_gen_2);
-    int i=0;
-
-
-    // i=0;
-    // for(auto j=encoded_gen_2.begin();j!=encoded_gen_2.end();++j)
-    // {
-    //         std::cout << i<<" x: " << j->second<<"fitness: "<<j->first << std::endl;
-    //         ++i;
-    // }
-    for(auto j=gen.begin();j!=gen.end();++j)
+    float result=0.0;
+    float temp=0.0;
+    int max_index;
+    for(int i=0; i<gen.size();++i)
     {
-            std::cout << i<<" x: " << *j<< std::endl;
-            ++i;
+        temp = test.fitness_function(gen[i]);
+        if(result<=temp)
+        {
+            result = temp;
+            max_index =i;
+        }
     }
-    // int x=15;
-    // float y=0.0;
-    // y=test.fitness_function(x);
-    // std::cout << " x: " << x <<" fitness:"<<y<<std::endl;
-
-
+    std::cout << " x: " << gen[max_index]<<"\n";
+    std::cout << " fitness: " << result<<"\n";
     return 0;
 }
