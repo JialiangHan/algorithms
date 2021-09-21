@@ -7,7 +7,7 @@
 #include <iostream>
 #include <random>
 #include <algorithm> 
-
+// #include <matplotlibcpp.h>
 
 TSP ga_tsp::initial_TSP()
 {
@@ -241,13 +241,18 @@ int main(int argc, char** argv) {
     //         max_index =i;
     //     }
     // }
+    std::vector<float> x,y;
     for(int i=0;i<problem.size();++i)
     {
         std::cout << " index: " << problem[i].index<<"\n";   
         std::cout << " x: " << problem[i].coordinates.first<<"\n";
         std::cout << " y: " << problem[i].coordinates.second<<"\n";
+        x.push_back(problem[i].coordinates.first);
+        y.push_back(problem[i].coordinates.second);
     }
     // std::cout << " x: " << gen[max_index]<<"\n";
     // std::cout << " fitness: " << result<<"\n";
+    // matplotlibcpp::plot(x,y);
+    // matplotlibcpp::show();
     return 0;
 }
