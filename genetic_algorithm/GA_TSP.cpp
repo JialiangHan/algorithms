@@ -1,11 +1,11 @@
 //this is a simple example for genetic algorithm
-//exmaple is to find max value of -(x^2)/10 +3x, x in [0,31]
+//exmaple is to solve traving salesman problem
 
 #include "GA_TSP.h"
-#include <bitset>
+// #include <bitset>
 #include <math.h>
 #include <iostream>
-#include <random>
+// #include <random>
 #include <algorithm> 
 // #include <matplotlibcpp.h>
 
@@ -75,22 +75,17 @@ float ga_tsp::get_fitness_for_chromosome(chromosome& chromo)
     travel_distance += distance(chromo.front(), chromo.back());
     return travel_distance;
 }
-// float ga_tsp::fitness_function(int x)
-// {
-//     float result;
-//     result = -(x * x)/10.0 + 3.0*x;
-//     return result;
-// }
 
-// fitness_map ga_tsp::fitness(encoded_generation& y)
-// {
-//     fitness_map map;
-//     for(auto i:y)
-//     {
-//         map.emplace(fitness_function(string_to_int(i)),string_to_int(i));
-//     }
-//     return map;
-// }
+fitness_map ga_tsp::get_fitness_for_generation(generation& gen)
+{
+    fitness_map fm;
+    float temp=0.0;
+    for(auto i:gen)
+    {
+        fm.emplace(get_fitness_for_chromosome(i),i);
+    }
+    return fm;
+}
     
 // int ga_tsp::string_to_int(std::string s)
 // {
@@ -235,15 +230,17 @@ float ga_tsp::get_fitness_for_chromosome(chromosome& chromo)
 int main(int argc, char** argv) {
     const int max_iterations =100;
     const float probability_mutation = 0.02;
-    const int population_size = 10;
+    const int population_size = 20;
     const int number_of_cities = 20;
     ga_tsp test(max_iterations,probability_mutation,population_size,number_of_cities);
     TSP problem;
     problem = test.initial_TSP();
-    chromosome chromo;
-    chromo = test.form_chromosome(problem);
-    // generation gen;
-    // gen = test.initial_generation(problem);
+    // chromosome chromo;
+    // chromo = test.form_chromosome(problem);
+    generation gen;
+    gen = test.initial_generation(problem);
+    fitness_map fm;
+    fm = test.get_fitness_for_generation(gen);
     // gen = test.evolution();
     // float result=0.0;
     // float temp=0.0;
@@ -261,15 +258,17 @@ int main(int argc, char** argv) {
     // for(int i=0;i<chromo.size();++i)
     // {
         // std::cout<<"chromosome"<< i<< std::endl;
-        float sum=0.0;
-        for(int j=0;j<chromo.size()-1;++j)
+        // float sum=0.0;
+        int j=0;
+        for(auto i=fm.begin();i!=fm.end();++i)
         {
-            sum += test.distance(chromo[j],chromo[j+1]);
-            std::cout <<"index"<<j<< " distance " << sum <<"\n";
+            // sum += test.distance(chromo[j],chromo[j+1]);
+            std::cout <<"index "<< j << " fitness " << i->first <<"\n";
+            j++;
         }
-        sum+=test.distance(chromo[19],chromo[0]);
-        std::cout<<sum<<"\n";
-        std::cout<<test.get_fitness_for_chromosome(chromo)<<std::endl;
+        // sum+=test.distance(chromo[19],chromo[0]);
+        // std::cout<<sum<<"\n";
+        // std::cout<<test.get_fitness_for_chromosome(chromo)<<std::endl;
         // x.push_back(problem[i].coordinates.first);
         // y.push_back(problem[i].coordinates.second);
     // }

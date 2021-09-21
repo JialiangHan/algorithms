@@ -1,4 +1,3 @@
-
 #ifndef GA_TSP
 #define GA_TSP
 
@@ -23,7 +22,7 @@ struct City
 typedef std::vector<City> TSP;
 typedef std::vector<City> chromosome;
 typedef std::vector<chromosome> generation;
-typedef std::multimap<float,int> fitness_map;
+typedef std::multimap<float,chromosome> fitness_map;
 class ga_tsp
 {
 public:
@@ -78,7 +77,7 @@ public:
 
     float get_fitness_for_chromosome(chromosome& chromo);
        
-    // fitness_map fitness(encoded_generation& y);
+    fitness_map get_fitness_for_generation(generation& gen);
     
     // encoded_generation selection(fitness_map& z);
 
