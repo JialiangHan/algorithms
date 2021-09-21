@@ -16,6 +16,10 @@ struct City
 {
     int index;
     std::pair<float,float> coordinates;
+    bool operator==(const City& other) const
+    {
+    return this->index == other.index && this->coordinates.first == other.coordinates.first && this->coordinates.second == other.coordinates.second;
+    }
 }; 
 
 typedef std::vector<City> TSP;
@@ -25,6 +29,14 @@ typedef std::vector<chromosome> generation;
 class ga_tsp
 {
 public:
+    /**
+     * @brief Construct a new ga tsp object
+     * 
+     * @param max_iterations 
+     * @param probability 
+     * @param size 
+     * @param cities 
+     */
     ga_tsp(const int max_iterations,const float probability,const int size,const int cities)
     {
         max_iteration = max_iterations;
@@ -32,13 +44,31 @@ public:
         population_size = size;
         number_of_city = cities;
     };
+    /**
+     * @brief Destroy the ga tsp object
+     * 
+     */
     ~ga_tsp(){};
-
+    /**
+     * @brief initialize traving sales man problem by number of city;
+     * 
+     * @return TSP 
+     */
     TSP initial_TSP();
-
+    /**
+     * @brief generate a chromosome from TSP problem
+     * 
+     * @param problem 
+     * @return chromosome 
+     */
     chromosome form_chromosome(TSP problem);
-   
-    generation initial_generation();
+    /**
+     * @brief generate initial generation;
+     * 
+     * @param problem 
+     * @return generation 
+     */
+    generation initial_generation(TSP& problem);
     
     // encoded_generation encoding(generation& x);
    
