@@ -79,7 +79,7 @@ public:
        
     fitness_map get_fitness_for_generation(generation& gen);
     
-    // encoded_generation selection(fitness_map& z);
+    encoded_generation selection(fitness_map& z);
 
     // encoded_generation mating(encoded_generation& z);
    
