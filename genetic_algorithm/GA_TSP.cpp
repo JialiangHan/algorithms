@@ -87,41 +87,34 @@ fitness_map ga_tsp::get_fitness_for_generation(generation& gen)
     return fm;
 }
     
-// int ga_tsp::string_to_int(std::string s)
-// {
-//     int size = s.size();
-//     int result=0;
-//     for(int i=0;i<size;++i)
-//     {
-//         result += (s[i]-48) * pow(2,size-i-1);
-//     }
-//     return result;
-// }
-
-// encoded_generation ga_tsp::selection(fitness_map& z)
-// {
-//     float total_fitness=0.0;
-//     fitness_map probability_map;
-//     encoded_generation selected;
-//     for(auto i:z)
-//     {
-//         total_fitness += i.first;
-//     }
-//     for(auto i:z)
-//     {
-//         probability_map.emplace(i.first/total_fitness, i.second);
-//     }
-//     int i=5;
-//     auto j=probability_map.end();
-//     --j;
-//     while(i>0)
-//     {
-//         selected.push_back(std::bitset< 5 >( j->second ).to_string());
-//         --j;
-//         --i;
-//     }
-//     return selected;
-// }
+generation ga_tsp::select_chromosome(fitness_map& fm)
+{
+    generation gen;
+    //keep chromosomo with highest fitness
+    gen.push_back((fm.rbegin()->second));
+    float total_fitness=0.0;
+    float cumulated_fitness = 0.0;
+    fitness_map probability_map;
+    for(auto i:fm)
+    {
+        total_fitness += i.first;
+    }
+    for(auto i:fm)
+    {
+        cumulated_fitness += i.first;
+        probability_map.emplace(cumulated_fitness/total_fitness, i.second);
+    }
+    // i: number of chromosome selected
+    int i=population_size/2 -1;
+    float roll=0.0;
+    while(i>0)
+    {
+        roll = rand() % RAND_MAX / (float) RAND_MAX;
+        gen.push_back(probability_map.lower_bound(roll)->second);
+        --i;
+    }
+    return gen;
+}
 
 // encoded_generation ga_tsp::mating(encoded_generation& z)
 // {   
@@ -241,40 +234,25 @@ int main(int argc, char** argv) {
     gen = test.initial_generation(problem);
     fitness_map fm;
     fm = test.get_fitness_for_generation(gen);
+    gen = test.select_chromosome(fm);
     // gen = test.evolution();
     // float result=0.0;
     // float temp=0.0;
-    // int max_index;
-    // for(int i=0; i<gen.size();++i)
-    // {
-    //     temp = test.fitness_function(gen[i]);
-    //     if(result<=temp)
-    //     {
-    //         result = temp;
-    //         max_index =i;
-    //     }
-    // }
-    // std::vector<float> x,y;
-    // for(int i=0;i<chromo.size();++i)
-    // {
-        // std::cout<<"chromosome"<< i<< std::endl;
-        // float sum=0.0;
-        int j=0;
-        for(auto i=fm.begin();i!=fm.end();++i)
+    int j=0;
+    for(auto i=fm.begin();i!=fm.end();++i)
+    {
+        std::cout <<"index "<< j << " fitness " << i->first <<"\n";
+        j++;
+    }
+    j=0;
+    for(auto i=gen.begin();i!=gen.end();++i)
+    {
+        std::cout <<"index "<< j <<"\n";
+        for(auto k=i->begin();k!=i->end();++k)
         {
-            // sum += test.distance(chromo[j],chromo[j+1]);
-            std::cout <<"index "<< j << " fitness " << i->first <<"\n";
-            j++;
+            std::cout << k->index<<" " ;
         }
-        // sum+=test.distance(chromo[19],chromo[0]);
-        // std::cout<<sum<<"\n";
-        // std::cout<<test.get_fitness_for_chromosome(chromo)<<std::endl;
-        // x.push_back(problem[i].coordinates.first);
-        // y.push_back(problem[i].coordinates.second);
-    // }
-    // std::cout << " x: " << gen[max_index]<<"\n";
-    // std::cout << " fitness: " << result<<"\n";
-    // matplotlibcpp::plot(x,y);
-    // matplotlibcpp::show();
+        j++;
+    }
     return 0;
 }
