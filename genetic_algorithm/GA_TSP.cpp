@@ -116,43 +116,20 @@ generation ga_tsp::select_chromosome(fitness_map& fm)
     return gen;
 }
 
-// encoded_generation ga_tsp::mating(encoded_generation& z)
-// {   
-//     encoded_generation next;
-//     while(next.size() < population_size)
-//     {
-//         for(auto i=z.begin();i!=z.end();++i)
-//         {
-//             next.push_back(*i);
-//         }
-//     }
-//     return next;
-// }
-
-// encoded_generation ga_tsp::exchange_genes(encoded_generation& before)
-// {
-//     encoded_generation exchanged;
-//     std::default_random_engine generator;
-//     std::uniform_int_distribution<int> distribution(0,number_of_bits);
-//     auto iter = before.begin();
-//     std::string temp11,temp12,temp21,temp22;
-//     while(iter!=before.end())
-//     {
-//         int dice_roll = distribution(generator);
-//         temp11 = (*iter).substr(0,dice_roll);
-//         temp12 = (*iter).substr(dice_roll);
-//         temp21 = (*(++iter)).substr(0,dice_roll);
-//         temp22 = (*iter).substr(dice_roll);
-//         exchanged.push_back(temp11+temp22);
-//         exchanged.push_back(temp21+temp12);
-//         ++iter;
-//         if(exchanged.size() >= population_size)
-//         {
-//             break;
-//         }
-//     }
-//     return exchanged;
-// }
+void ga_tsp::exchange_genes(chromosome& a, chromosome& b)
+{
+    //select a random location to swap genes;
+    int i;
+    i= rand() % a.size();
+    City temp;
+    // swap a[i],b[i];
+    std::swap(a[i],b[i]);
+    // if duplicates find in a
+    if(std::count(a.begin(),a.end(),a[i])!=1)
+    {
+        
+    }
+}
 
 // std::string ga_tsp::mutation(std::string chrono)
 // {

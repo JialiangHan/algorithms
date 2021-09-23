@@ -74,16 +74,34 @@ public:
      * @return float 
      */
     float distance(City& a, City& b);
-
+    /**
+     * @brief Get the fitness for chromosome object
+     * 
+     * @param chromo 
+     * @return float 
+     */
     float get_fitness_for_chromosome(chromosome& chromo);
-       
+    /**
+     * @brief Get the fitness for generation object
+     * 
+     * @param gen 
+     * @return fitness_map 
+     */
     fitness_map get_fitness_for_generation(generation& gen);
-    
+    /**
+     * @brief select half of chromosome from fitness map. keep the one with highest fitness score;
+     * 
+     * @param fm 
+     * @return generation 
+     */
     generation select_chromosome(fitness_map& fm);
-
-    // encoded_generation mating(encoded_generation& z);
-   
-    // encoded_generation exchange_genes(encoded_generation& mated);
+    /**
+     * @brief exchange genes between two chromosomes
+     * 
+     * @param a chromosome
+     * @param b chromosome
+     */
+    void exchange_genes(chromosome& a, chromosome& b);
    
     // std::string mutation(std::string chrono);
     
